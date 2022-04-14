@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	npx hardhat build
+	npx hardhat compile
 
 .PHONY: test
 test:

@@ -1,5 +1,5 @@
 /*
- * This file is part of the contracts written for artèQ Investment Fund (https://github.com/arteq-io/arteq-contracts).
+ * This file is part of the contracts written for artèQ Investment Fund (https://github.com/arteq-io/contracts).
  * Copyright (c) 2022 artèQ (https://arteq.io)
  *
  * This program is free software: you can redistribute it and/or modify

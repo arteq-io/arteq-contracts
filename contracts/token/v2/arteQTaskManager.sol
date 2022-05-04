@@ -1,5 +1,5 @@
 /*
- * This file is part of the contracts written for artèQ Investment Fund (https://github.com/arteq-io/arteq-contracts).
+ * This file is part of the contracts written for artèQ Investment Fund (https://github.com/arteq-io/contracts).
  * Copyright (c) 2022 artèQ (https://arteq.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,24 @@
  */
 // SPDX-License-Identifier: GNU General Public License v3.0
 
-pragma solidity 0.8.0;
+pragma solidity 0.8.1;
 
-/// @author Kam Amini <kam@arteq.io> <kam.cpp@gmail.com>
-///
-/// @title The interface for finalizing tasks. Mainly used by artèQ contracts to
-///
-/// perform administrative tasks in conjuction with admin contract.
-interface IarteQTaskFinalizer {
+import "@arteq-tech/contracts/TaskManager.sol";
 
-    event TaskFinalized(address finalizer, address origin, uint256 taskId);
+/// @notice Use at your own risk
+contract arteQTaskManager is TaskManager {
 
-    function finalizeTask(address origin, uint256 taskId) external;
+    constructor(
+        address[] memory initialAdmins,
+        address[] memory initialCreators,
+        address[] memory initialApprovers,
+        address[] memory initialExecutors,
+        bool enableDeposit
+    ) TaskManager(
+        initialAdmins,
+        initialCreators,
+        initialApprovers,
+        initialExecutors,
+        enableDeposit
+    ) {}
 }

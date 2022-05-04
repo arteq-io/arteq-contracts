@@ -10,5 +10,8 @@
     "ethers": "^5.1.4",
     "hardhat": "^2.3.0",
     "solidity-coverage": "^0.7.17"
+  },
+  "dependencies": {
+    "@arteq-tech/contracts": "0.0.5"
   }
 }

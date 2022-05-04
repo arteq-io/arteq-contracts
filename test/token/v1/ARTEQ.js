@@ -1,5 +1,5 @@
 /*
- * This file is part of the contracts written for artèQ Investment Fund (https://github.com/arteq-io/arteq-contracts).
+ * This file is part of the contracts written for artèQ Investment Fund (https://github.com/arteq-io/contracts).
  * Copyright (c) 2022 artèQ (https://arteq.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -101,7 +101,7 @@ describe("ARTEQ", function() {
         expect(await innerContract.connect(trader1).totalSupply(gARTEQ)).to.equal(10 ** 6);
         expect(await innerContract.connect(trader1).balanceOf(adminContract.address, gARTEQ)).to.equal(10 ** 6);
 
-        const ARTEQContract = await hre.ethers.getContractFactory("ARTEQ", admin1);
+        const ARTEQContract = await hre.ethers.getContractFactory("contracts/token/v1/ARTEQ.sol:ARTEQ", admin1);
         contract = await ARTEQContract.deploy(innerContract.address, adminContract.address);
         await contract.deployed();
         {

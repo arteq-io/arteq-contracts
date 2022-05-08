@@ -330,6 +330,37 @@ describe('ARTEQ', function() {
     }
   });
 
+  it("[doBatchTransferWithLock] an account with allowance must not be able to transfer when locked", async () => {
+    const ts = await _getChainTs();
+    const taskId = await _getApprovedTask(tmContract);
+    await contract.connect(executor)
+      .doBatchTransferWithLock(taskId, [ trader1.address ], [ 1000 ], [ ts + 1000 ]);
+    // give allowance to trader3
+    {
+      expect(await contract.connect(trader1).allowance(trader1.address, trader3.address)).to.equal(0);
+      await contract.connect(trader1).approve(trader3.address, 100000);
+      expect(await contract.connect(trader2).allowance(trader1.address, trader3.address)).to.equal(100000);
+    }
+    {
+      await _setChainTs(ts + 400);
+      await expect(contract.connect(trader3).transferFrom(trader1.address, trader2.address, 150))
+        .to.be.revertedWith("ARTEQ: account cannot transfer tokens");
+    }
+    {
+      await _setChainTs(ts + 999);
+      await expect(contract.connect(trader3).transferFrom(trader1.address, trader2.address, 150))
+        .to.be.revertedWith("ARTEQ: account cannot transfer tokens");
+    }
+    {
+      await _setChainTs(ts + 1001);
+      expect(await contract.connect(trader2).balanceOf(trader1.address)).to.equal(1000);
+      expect(await contract.connect(trader1).balanceOf(trader2.address)).to.equal(0);
+      await contract.connect(trader3).transferFrom(trader1.address, trader2.address, 150);
+      expect(await contract.connect(trader2).balanceOf(trader1.address)).to.equal(850);
+      expect(await contract.connect(trader1).balanceOf(trader2.address)).to.equal(150);
+    }
+  });
+
   it("[doBatchTransferWithLock] remove lock", async () => {
     const ts = await _getChainTs();
     const taskId = await _getApprovedTask(tmContract);

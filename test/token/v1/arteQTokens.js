@@ -245,7 +245,7 @@ describe("arteQ Tokens", function() {
         }
     });
 
-    it("[ramp up phase] token distribution can be called only by admin before end of phase (no lock set)", async() => {
+    it.skip("[ramp up phase] token distribution can be called only by admin before end of phase (no lock set)", async() => {
         // set time to before end of phase
         await ethers.provider.send("evm_setNextBlockTimestamp", [ 1640985000 ]);
         await ethers.provider.send("evm_mine");
@@ -260,7 +260,7 @@ describe("arteQ Tokens", function() {
         await expect(call).to.be.revertedWith("arteQAdmin: not an admin account");
     });
 
-    it("[ramp up phase] token distribution can not have any transfer to treasury and admin accounts before end of phase (no lock set)", async() => {
+    it.skip("[ramp up phase] token distribution can not have any transfer to treasury and admin accounts before end of phase (no lock set)", async() => {
         {
             const taskId = await getApprovedTask();
             await contract.connect(admin1).setTreasuryAccount(taskId, treasury1.address);
@@ -294,7 +294,7 @@ describe("arteQ Tokens", function() {
         }
     });
 
-    it("[ramp up phase] correct token distribution before end of phase (no lock set)", async() => {
+    it.skip("[ramp up phase] correct token distribution before end of phase (no lock set)", async() => {
         // set time to before end of phase
         await ethers.provider.send("evm_setNextBlockTimestamp", [ 1640986000 ]);
         await ethers.provider.send("evm_mine");
@@ -320,7 +320,7 @@ describe("arteQ Tokens", function() {
         expect(await contract.connect(trader2).balanceOf(adminContract.address, ARTEQ)).to.equal(10 ** 10 - 100 - 1000);
     });
 
-    it("[ramp up phase] correct token distribution before end of phase (with lock set)", async() => {
+    it.skip("[ramp up phase] correct token distribution before end of phase (with lock set)", async() => {
         // set time to before end of phase
         await ethers.provider.send("evm_setNextBlockTimestamp", [ 1640986100 ]);
         await ethers.provider.send("evm_mine");
@@ -423,7 +423,7 @@ describe("arteQ Tokens", function() {
         // TODO(kam): test approved send
     });
 
-    it("[ramp up phase] token distribution when the phase has finished (no lock set)", async() => {
+    it.skip("[ramp up phase] token distribution when the phase has finished (no lock set)", async() => {
         // set time to before end of phase
         await ethers.provider.send("evm_setNextBlockTimestamp", [ 1645000000 ]);
         await ethers.provider.send("evm_mine");

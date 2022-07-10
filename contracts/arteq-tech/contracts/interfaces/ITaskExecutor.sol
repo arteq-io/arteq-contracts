@@ -1,6 +1,6 @@
 /*
- * This file is part of the contracts written for artèQ Investment Fund (https://github.com/arteq-io/contracts).
- * Copyright (c) 2022 artèQ (https://arteq.io)
+ * This file is part of the artèQ Technologies contracts (https://github.com/arteq-tech/contracts).
+ * Copyright (c) 2022 artèQ Technologies (https://arteq.tech)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,14 @@
 
 pragma solidity 0.8.1;
 
-import "../../arteq-tech/contracts/TaskManager.sol";
-
+/// @author Kam Amini <kam@arteq.io>
+///
 /// @notice Use at your own risk
-contract arteQTaskManager is TaskManager {
+interface ITaskExecutor {
 
-    constructor(
-        address[] memory initialAdmins,
-        address[] memory initialCreators,
-        address[] memory initialApprovers,
-        address[] memory initialExecutors,
-        bool enableDeposit
-    ) TaskManager(
-        initialAdmins,
-        initialCreators,
-        initialApprovers,
-        initialExecutors,
-        enableDeposit
-    ) {}
+    event TaskExecuted(address finalizer, address executor, uint256 taskId);
+
+    function executeTask(address executor, uint256 taskId) external;
+
+    function executeAdminTask(address executor, uint256 taskId) external;
 }

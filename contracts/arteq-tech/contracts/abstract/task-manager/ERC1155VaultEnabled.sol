@@ -26,6 +26,7 @@ import "./AdminRoleEnabled.sol";
 /// @notice Use at your own risk
 abstract contract ERC1155VaultEnabled is AdminRoleEnabled, ERC1155Vault {
 
+    /* solhint-disable func-name-mixedcase */
     function ERC1155Transfer(
         uint256 adminTaskId,
         address tokenContract,

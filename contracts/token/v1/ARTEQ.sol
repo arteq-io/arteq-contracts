@@ -34,6 +34,7 @@ import "./IarteQTaskFinalizer.sol";
 /// @notice Use at your own risk
 contract ARTEQ is Context, ERC165, IERC20Metadata {
 
+    /* solhint-disable const-name-snakecase */
     uint256 public constant ARTEQTokenId = 1;
 
     address private _arteQTokensContract;
@@ -105,12 +106,14 @@ contract ARTEQ is Context, ERC165, IERC20Metadata {
     }
 
     // If this contract gets a balance in some ERC20 contract after it's finished, then we can rescue it.
-    function rescueTokens(uint256 adminTaskId, IERC20 foreignToken, address to) external adminApprovalRequired(adminTaskId) {
+    function rescueTokens(uint256 adminTaskId, IERC20 foreignToken, address to)
+      external adminApprovalRequired(adminTaskId) {
         foreignToken.transfer(to, foreignToken.balanceOf(address(this)));
     }
 
     // If this contract gets a balance in some ERC721 contract after it's finished, then we can rescue it.
-    function approveNFTRescue(uint256 adminTaskId, IERC721 foreignNFT, address to) external adminApprovalRequired(adminTaskId) {
+    function approveNFTRescue(uint256 adminTaskId, IERC721 foreignNFT, address to)
+      external adminApprovalRequired(adminTaskId) {
         foreignNFT.setApprovalForAll(to, true);
     }
 

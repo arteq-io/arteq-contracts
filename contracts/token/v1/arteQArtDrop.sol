@@ -27,6 +27,9 @@ import "./IarteQTaskFinalizer.sol";
 /// @author Kam Amini <kam@arteq.io> <kam.cpp@gmail.com>
 ///
 /// @notice Use at your own risk
+
+/* solhint-disable contract-name-camelcase */
+/* solhint-disable reason-string */
 contract arteQArtDrop is ERC721URIStorage, IERC2981 {
 
     string private constant DEFAULT_TOKEN_URI = "DEFAULT_TOKEN_URI";
@@ -46,6 +49,7 @@ contract arteQArtDrop is ERC721URIStorage, IERC2981 {
     uint256 private _preMintedTokenIdCounter;
 
     // number of tokens owned by the contract
+    /* solhint-disable state-visibility */
     uint256 _contractBalance;
 
     address private _adminContract;
@@ -134,7 +138,8 @@ contract arteQArtDrop is ERC721URIStorage, IERC2981 {
     }
 
     modifier onlyReservationAndDistributionStages() {
-        require(_stage == RESERVATION_STAGE || _stage == DISTRIBUTION_STAGE, "arteQArtDrop: only callable in reservation and distribution stage");
+        require(_stage == RESERVATION_STAGE || _stage == DISTRIBUTION_STAGE,
+                "arteQArtDrop: only callable in reservation and distribution stage");
         _;
     }
 
@@ -476,7 +481,9 @@ contract arteQArtDrop is ERC721URIStorage, IERC2981 {
         require(msg.value >= priceToPay, "arteQArtDrop: insufficient funds");
         uint256 remainder = msg.value - priceToPay;
         if (remainder > 0) {
+            /* solhint-disable avoid-low-level-calls */
             (bool success, ) = msg.sender.call{value: remainder}(new bytes(0));
+            /* solhint-enable avoid-low-level-calls */
             require(success, "arteQArtDrop: failed to send the remainder");
             emit Returned(msg.sender, msg.sender, remainder);
         }
@@ -538,7 +545,9 @@ contract arteQArtDrop is ERC721URIStorage, IERC2981 {
         require(amount > 0, "arteQArtDrop: cannot transfer zero");
         require(amount <= address(this).balance, "arteQArtDrop: transfer more than balance");
 
+        /* solhint-disable avoid-low-level-calls */
         (bool success, ) = target.call{value: amount}(new bytes(0));
+        /* solhint-enable avoid-low-level-calls */
         require(success, "arteQArtDrop: failed to transfer");
 
         emit Withdrawn(msg.sender, target, amount);

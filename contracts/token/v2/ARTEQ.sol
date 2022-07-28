@@ -26,9 +26,8 @@ import "../../arteq-tech/contracts/abstract/task-managed/TaskManagedERC20VaultEn
 import "../../arteq-tech/contracts/abstract/task-managed/TaskManagedERC721VaultEnabled.sol";
 import "../../arteq-tech/contracts/abstract/task-managed/TaskManagedERC1155VaultEnabled.sol";
 
-/// @author Kam Amini <kam@arteq.io> <kam.cpp@gmail.com>
-///
 /// @notice Use at your own risk
+/* solhint-disable reason-string */
 contract ARTEQ is
   ERC20,
   AccountLocker,

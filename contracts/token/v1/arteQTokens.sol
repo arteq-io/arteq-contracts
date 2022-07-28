@@ -30,12 +30,17 @@ import "./IarteQTaskFinalizer.sol";
 /// Fund ecosystem. It also contains the logic used for profit distribution.
 ///
 /// @notice Use at your own risk
+
+/* solhint-disable contract-name-camelcase */
+/* solhint-disable not-rely-on-time */
+/* solhint-disable reason-string */
 contract arteQTokens is ERC1155Supply, IarteQTokens {
 
     /// The main artèQ token
     uint256 public constant ARTEQ = 1;
 
     /// The governance token of artèQ Investment Fund
+    /* solhint-disable const-name-snakecase */
     uint256 public constant gARTEQ = 2;
 
     // The mapping from token IDs to their respective Metadata URIs
@@ -322,7 +327,8 @@ contract arteQTokens is ERC1155Supply, IarteQTokens {
         }
     }
 
-    function balanceOf(address account, uint256 tokenId) public view virtual override validToken(tokenId) returns (uint256) {
+    function balanceOf(address account, uint256 tokenId)
+      public view virtual override validToken(tokenId) returns (uint256) {
         if (tokenId == gARTEQ) {
             return super.balanceOf(account, tokenId);
         }
@@ -341,7 +347,8 @@ contract arteQTokens is ERC1155Supply, IarteQTokens {
         return _profitTokensTransferredToAccounts;
     }
 
-    function compatBalanceOf(address /* origin */, address account, uint256 tokenId) external view virtual override returns (uint256) {
+    function compatBalanceOf(address /* origin */, address account, uint256 tokenId)
+      external view virtual override returns (uint256) {
         return balanceOf(account, tokenId);
     }
 
@@ -354,7 +361,8 @@ contract arteQTokens is ERC1155Supply, IarteQTokens {
         _safeTransferFrom(origin, from, to, tokenId, amount, "");
     }
 
-    function compatTransferFrom(address origin, address from, address to, uint256 tokenId, uint256 amount) external virtual override {
+    function compatTransferFrom(address origin, address from, address to, uint256 tokenId, uint256 amount)
+      external virtual override {
         require(
             from == origin || isApprovedForAll(from, origin),
             "arteQTokens: caller is not owner nor approved "
@@ -362,7 +370,8 @@ contract arteQTokens is ERC1155Supply, IarteQTokens {
         _safeTransferFrom(origin, from, to, tokenId, amount, "");
     }
 
-    function compatAllowance(address /* origin */, address account, address operator) external view virtual override returns (uint256) {
+    function compatAllowance(address /* origin */, address account, address operator)
+      external view virtual override returns (uint256) {
         if (isApprovedForAll(account, operator)) {
             return 2 ** 256 - 1;
         }
@@ -374,19 +383,22 @@ contract arteQTokens is ERC1155Supply, IarteQTokens {
     }
 
     // If this contract gets a balance in some ERC20 contract after it's finished, then we can rescue it.
-    function rescueTokens(uint256 adminTaskId, IERC20 foreignToken, address to) external adminApprovalRequired(adminTaskId) {
+    function rescueTokens(uint256 adminTaskId, IERC20 foreignToken, address to)
+      external adminApprovalRequired(adminTaskId) {
         foreignToken.transfer(to, foreignToken.balanceOf(address(this)));
     }
 
     // If this contract gets a balance in some ERC721 contract after it's finished, then we can rescue it.
-    function approveNFTRescue(uint256 adminTaskId, IERC721 foreignNFT, address to) external adminApprovalRequired(adminTaskId) {
+    function approveNFTRescue(uint256 adminTaskId, IERC721 foreignNFT, address to)
+      external adminApprovalRequired(adminTaskId) {
         foreignNFT.setApprovalForAll(to, true);
     }
 
     // In case of any manual buy back event which is not processed through DEX contracts, this function
     // helps admins distribute the profits. This function must be called only when the bought back tokens
     // have been successfully transferred to treasury account.
-    function processManualBuyBackEvent(uint256 adminTaskId, uint256 boughtBackTokensAmount) external adminApprovalRequired(adminTaskId) {
+    function processManualBuyBackEvent(uint256 adminTaskId, uint256 boughtBackTokensAmount)
+      external adminApprovalRequired(adminTaskId) {
         uint256 profit = (boughtBackTokensAmount * _profitPercentage) / 100;
         if (profit > 0) {
             _balances[ARTEQ][_treasuryAccount] -= profit;
@@ -434,7 +446,8 @@ contract arteQTokens is ERC1155Supply, IarteQTokens {
 
         // Ensures that the locked accounts cannot send their ARTEQ tokens
         if (id == ARTEQ) {
-            require(_lockedUntilTimestamps[from] == 0 || block.timestamp > _lockedUntilTimestamps[from], "arteQTokens: account cannot send tokens");
+            require(_lockedUntilTimestamps[from] == 0 || block.timestamp > _lockedUntilTimestamps[from],
+                    "arteQTokens: account cannot send tokens");
         }
 
         // Realize/Transfer the accumulated profit of 'from' account and make it spendable

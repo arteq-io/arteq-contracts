@@ -34,6 +34,8 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
   * Note: The original contract has been modified to cover the needs as
   *       part of artèQ Investment Fund ecosystem
   */
+
+/* solhint-disable reason-string */
 abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     using Address for address;
 
@@ -47,6 +49,7 @@ abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev See {_setURI}.
      */
+    /* solhint-disable no-empty-blocks */
     constructor() {
     }
 

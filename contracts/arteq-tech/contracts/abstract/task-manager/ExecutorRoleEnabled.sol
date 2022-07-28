@@ -32,13 +32,8 @@ abstract contract ExecutorRoleEnabled is AdminRoleEnabled {
     event ExecutorAdded(address account);
     event ExecutorRemoved(address account);
 
-    modifier onlyExecutor() {
-        require(_isExecutor(msg.sender), "ExecutorRoleEnabled: not an executor account");
-        _;
-    }
-
     modifier mustBeExecutor(address account) {
-        require(_isExecutor(account), "ExecutorRoleEnabled: not an executor account");
+        require(_isExecutor(account), "ERE: not executor");
         _;
     }
 
@@ -80,16 +75,16 @@ abstract contract ExecutorRoleEnabled is AdminRoleEnabled {
     }
 
     function _addExecutor(address account) internal {
-        require(account != address(0), "ExecutorRoleEnabled: zero account cannot be used");
-        require(!_executors[account], "ExecutorRoleEnabled: already an executor account");
+        require(account != address(0), "ERE: zero account");
+        require(!_executors[account], "ERE: is executor");
         _executors[account] = true;
         _nrOfExecutors += 1;
         emit ExecutorAdded(account);
     }
 
     function _removeExecutor(address account) internal {
-        require(account != address(0), "ExecutorRoleEnabled: zero account cannot be used");
-        require(_executors[account], "ExecutorRoleEnabled: not an executor account");
+        require(account != address(0), "ERE: zero account");
+        require(_executors[account], "ERE: not executor");
         _executors[account] = false;
         _nrOfExecutors -= 1;
         emit ExecutorRemoved(account);

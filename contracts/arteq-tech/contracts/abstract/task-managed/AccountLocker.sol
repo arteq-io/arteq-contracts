@@ -36,8 +36,8 @@ abstract contract AccountLocker is TaskExecutor {
     ) external
       tryExecuteTaskAfterwards(taskId)
     {
-        require(accounts.length == lockTss.length, "AccountLocker: inputs have incorrect lengths");
-        require(accounts.length > 0, "AccountLocker: empty inputs");
+        require(accounts.length == lockTss.length, "AL: wrong lengths");
+        require(accounts.length > 0, "AL: empty inputs");
         for (uint256 i = 0; i < accounts.length; i++) {
             _updateLockTs(accounts[i], lockTss[i]);
         }
@@ -57,7 +57,7 @@ abstract contract AccountLocker is TaskExecutor {
 
     function _isLocked(address account) internal view returns (bool) {
         uint256 lockTs = _getLockTs(account);
+        /* solhint-disable not-rely-on-time */
         return lockTs > 0 && block.timestamp <= lockTs;
     }
 }
-

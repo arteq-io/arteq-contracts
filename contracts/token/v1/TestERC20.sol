@@ -23,5 +23,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 /// @notice Use at your own risk
 contract TestERC20 is ERC20 {
 
+    /* solhint-disable no-empty-blocks */
     constructor() ERC20("Test ERC20", "TestERC20") {}
 }

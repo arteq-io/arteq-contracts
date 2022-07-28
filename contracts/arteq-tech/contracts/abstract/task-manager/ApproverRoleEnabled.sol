@@ -33,7 +33,7 @@ abstract contract ApproverRoleEnabled is AdminRoleEnabled {
     event ApproverRemoved(address account);
 
     modifier onlyApprover() {
-        require(_isApprover(msg.sender), "ApproverRoleEnabled: not an approver account");
+        require(_isApprover(msg.sender), "ApRE: not approver");
         _;
     }
 
@@ -75,16 +75,16 @@ abstract contract ApproverRoleEnabled is AdminRoleEnabled {
     }
 
     function _addApprover(address account) internal {
-        require(account != address(0), "ApproverRoleEnabled: zero account cannot be used");
-        require(!_approvers[account], "ApproverRoleEnabled: already an approver account");
+        require(account != address(0), "ApRE: zero account");
+        require(!_approvers[account], "ApRE: is approver");
         _approvers[account] = true;
         _nrOfApprovers += 1;
         emit ApproverAdded(account);
     }
 
     function _removeApprover(address account) internal {
-        require(account != address(0), "ApproverRoleEnabled: zero account cannot be used");
-        require(_approvers[account], "ApproverRoleEnabled: not an approver account");
+        require(account != address(0), "ApRE: zero account");
+        require(_approvers[account], "ApRE: not approver");
         _approvers[account] = false;
         _nrOfApprovers -= 1;
         emit ApproverRemoved(account);

@@ -60,7 +60,7 @@ abstract contract AdminTaskManaged is AdminRoleEnabled {
 
     function _getRequiredNrApprovals(uint256 taskId)
       internal view virtual override (TaskManaged) returns (uint) {
-        require(_taskExists(taskId), "AdminTaskManaged: task does not exist");
+        require(_taskExists(taskId), "ATM: non-exsiting task");
         return (1 + _nrOfAdmins / 2);
     }
 }

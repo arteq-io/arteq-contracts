@@ -21,20 +21,21 @@ pragma solidity 0.8.1;
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
+/* solhint-disable contract-name-camelcase */
 contract arteQCollection is ERC721URIStorage, IERC2981 {
 
     uint256 private _tokenIdCounter;
     bool private _publicMinting;
     uint16 private _adminCounter;
 
-    mapping (address => uint8) _admins;
-    mapping (address => uint8) _minters;
+    mapping (address => uint8) private _admins;
+    mapping (address => uint8) private _minters;
 
     address private _defaultRoyaltyWallet;
     uint256 private _defaultRoyaltyPercentage;
-    mapping (uint256 => address) _royaltyWallets;
-    mapping (uint256 => uint256) _royaltyPercentages;
-    mapping (uint256 => uint8) _royaltyExempts;
+    mapping (uint256 => address) private _royaltyWallets;
+    mapping (uint256 => uint256) private _royaltyPercentages;
+    mapping (uint256 => uint8) private _royaltyExempts;
 
     event AdminAdded(address newAdmin);
     event AdminRemoved(address removedAdmin);
@@ -151,7 +152,8 @@ contract arteQCollection is ERC721URIStorage, IERC2981 {
 
     // Set to zero in order to disable default royalties. Still, settings set per token work.
     function setDefaultRoyaltyPercentage(uint256 newDefaultRoyaltyPercentage) external onlyAdmin {
-        require(newDefaultRoyaltyPercentage >= 0 && newDefaultRoyaltyPercentage <= 50, "arteQCollection: royalty percentage must be between 0 and 50 inclusive");
+        require(newDefaultRoyaltyPercentage >= 0 && newDefaultRoyaltyPercentage <= 50,
+                "arteQCollection: wrong percentage");
         _defaultRoyaltyPercentage = newDefaultRoyaltyPercentage;
         emit DefaultRoyaltyPercentageChanged(newDefaultRoyaltyPercentage);
     }
@@ -170,15 +172,18 @@ contract arteQCollection is ERC721URIStorage, IERC2981 {
         emit TokenRemovedFromExemptionList(tokenId);
     }
 
-    function setTokenRoyaltyInfo(uint256 tokenId, address royaltyWallet, uint256 royaltyPercentage) external onlyAdmin {
+    function setTokenRoyaltyInfo(uint256 tokenId, address royaltyWallet, uint256 royaltyPercentage)
+      external onlyAdmin {
         require(_exists(tokenId), "arteQCollection: non-existing token");
-        require(royaltyPercentage >= 0 && royaltyPercentage <= 50, "arteQCollection: royalty percentage must be between 0 and 50 inclusive");
+        require(royaltyPercentage >= 0 && royaltyPercentage <= 50,
+                "arteQCollection: wrong percentage");
         _royaltyWallets[tokenId] = royaltyWallet;
         _royaltyPercentages[tokenId] = royaltyPercentage;
         emit TokenRoyaltyInfoChanged(tokenId, royaltyWallet, royaltyPercentage);
     }
 
-    function royaltyInfo(uint256 tokenId, uint256 salePrice) external view virtual override returns (address, uint256) {
+    function royaltyInfo(uint256 tokenId, uint256 salePrice)
+      external view virtual override returns (address, uint256) {
         require(_exists(tokenId), "arteQCollection: non-existing token");
         if (_royaltyExempts[tokenId] == 1) {
             return (address(0), 0);
@@ -240,7 +245,7 @@ contract arteQCollection is ERC721URIStorage, IERC2981 {
     }
 
     function _safeAddAdmin(address newAdmin) internal {
-        require(newAdmin != address(0), "arteQCollection: cannot set zero address as admin");
+        require(newAdmin != address(0), "arteQCollection: cannot use zero address");
         require(_admins[newAdmin] == 0, "arteQCollection: already an admin");
         _admins[newAdmin] = 1;
         _adminCounter += 1;

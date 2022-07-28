@@ -53,14 +53,15 @@ abstract contract ERC1155Vault is IERC1155Receiver {
         return bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"));
     }
 
+    /* solhint-disable func-name-mixedcase */
     function _ERC1155Transfer(
         address tokenContract,
         address to,
         uint256 tokenId,
         uint256 amount
     ) internal {
-        require(tokenContract != address(0), "ERC1155Vault: zero token address");
-        require(to != address(0), "ERC1155Vault: cannot transfer to zero");
+        require(tokenContract != address(0), "E1V: zero address");
+        require(to != address(0), "E1V: zero target");
 
         IERC1155(tokenContract).safeTransferFrom(address(this), to, tokenId, amount, "");
         emit ERC1155Transferred(tokenContract, to, tokenId, amount);
@@ -71,8 +72,8 @@ abstract contract ERC1155Vault is IERC1155Receiver {
         address operator,
         bool approved
     ) internal {
-        require(tokenContract != address(0), "ERC1155Vault: zero token address");
-        require(operator != address(0), "ERC1155Vault: zero address for operator");
+        require(tokenContract != address(0), "E1V: zero address");
+        require(operator != address(0), "E1V: zero operator");
 
         IERC1155(tokenContract).setApprovalForAll(operator, approved);
         emit ERC1155ApprovedForAll(tokenContract, operator, approved);

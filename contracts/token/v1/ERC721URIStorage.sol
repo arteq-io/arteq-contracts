@@ -31,6 +31,8 @@ import "./ERC721.sol";
   *
   * @dev ERC721 token with storage based token URI management.
   */
+
+/* solhint-disable reason-string */
 abstract contract ERC721URIStorage is ERC721 {
     using Strings for uint256;
 

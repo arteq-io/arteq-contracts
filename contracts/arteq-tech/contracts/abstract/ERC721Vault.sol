@@ -39,13 +39,14 @@ abstract contract ERC721Vault is IERC721Receiver {
         return bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"));
     }
 
+    /* solhint-disable func-name-mixedcase */
     function _ERC721Transfer(
         address tokenContract,
         address to,
         uint256 tokenId
     ) internal {
-        require(tokenContract != address(0), "ERC721Vault: zero token address");
-        require(to != address(0), "ERC721Vault: cannot transfer to zero");
+        require(tokenContract != address(0), "E7V: zero address");
+        require(to != address(0), "E7V: zero target");
 
         IERC721(tokenContract).safeTransferFrom(address(this), to, tokenId, "");
         emit ERC721Transferred(tokenContract, to, tokenId);
@@ -57,7 +58,7 @@ abstract contract ERC721Vault is IERC721Receiver {
         address operator,
         uint256 tokenId
     ) internal {
-        require(tokenContract != address(0), "ERC721Vault: zero token address");
+        require(tokenContract != address(0), "E7V: zero address");
 
         IERC721(tokenContract).approve(operator, tokenId);
         emit ERC721Approved(tokenContract, operator, tokenId);
@@ -68,8 +69,8 @@ abstract contract ERC721Vault is IERC721Receiver {
         address operator,
         bool approved
     ) internal {
-        require(tokenContract != address(0), "ERC721Vault: zero token address");
-        require(operator != address(0), "ERC721Vault: zero address for operator");
+        require(tokenContract != address(0), "E7V: zero address");
+        require(operator != address(0), "E7V: zero operator");
 
         IERC721(tokenContract).setApprovalForAll(operator, approved);
         emit ERC721ApprovedForAll(tokenContract, operator, approved);

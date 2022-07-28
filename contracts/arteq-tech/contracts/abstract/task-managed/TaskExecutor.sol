@@ -31,7 +31,7 @@ abstract contract TaskExecutor {
     event TaskManagerChanged(address newTaskManager);
 
     modifier tryExecuteTaskAfterwards(uint256 taskId) {
-        require(_taskManager != address(0), "TaskExecutor: task manager is not set");
+        require(_taskManager != address(0), "TE: no task manager");
         _;
         ITaskExecutor(_taskManager).executeTask(msg.sender, taskId);
     }
@@ -56,9 +56,9 @@ abstract contract TaskExecutor {
     }
 
     function _setTaskManager(address newTaskManager) internal {
-        require(newTaskManager != address(0), "TaskExecutor: zero address cannot be set");
+        require(newTaskManager != address(0), "TE: zero address");
         require(IERC165(newTaskManager).supportsInterface(type(ITaskExecutor).interfaceId),
-            "TaskExecutor: invalid contract");
+            "TE: invalid contract");
         _taskManager = newTaskManager;
         emit TaskManagerChanged(_taskManager);
     }

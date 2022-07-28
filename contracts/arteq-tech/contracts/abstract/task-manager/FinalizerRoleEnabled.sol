@@ -75,16 +75,16 @@ abstract contract FinalizerRoleEnabled is AdminRoleEnabled {
     }
 
     function _addFinalizer(address account) internal {
-        require(account != address(0), "FinalizerRoleEnabled: zero account cannot be used");
-        require(!_finalizers[account], "FinalizerRoleEnabled: already a finalizer account");
+        require(account != address(0), "FRE: zero account");
+        require(!_finalizers[account], "FRE: is finalizer");
         _finalizers[account] = true;
         _nrOfFinalizers += 1;
         emit FinalizerAdded(account);
     }
 
     function _removeFinalizer(address account) internal {
-        require(account != address(0), "FinalizerRoleEnabled: zero account cannot be used");
-        require(_finalizers[account], "FinalizerRoleEnabled: not a finalizer account");
+        require(account != address(0), "FRE: zero account");
+        require(_finalizers[account], "FRE: not finalizer");
         _finalizers[account] = false;
         _nrOfFinalizers -= 1;
         emit FinalizerRemoved(account);

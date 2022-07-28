@@ -33,13 +33,13 @@ abstract contract CreatorRoleEnabled is AdminRoleEnabled {
     event CreatorRemoved(address account);
 
     modifier onlyCreator() {
-        require(_isCreator(msg.sender), "CreatorRoleEnabled: not a creator account");
+        require(_isCreator(msg.sender), "CRE: not creator");
         _;
     }
 
     modifier onlyCreatorOrAdmin() {
         require(_isCreator(msg.sender) || _isAdmin(msg.sender),
-                "CreatorRoleEnabled: not a creator or admin account");
+                "CRE: not creator nor admin");
         _;
     }
 
@@ -81,16 +81,16 @@ abstract contract CreatorRoleEnabled is AdminRoleEnabled {
     }
 
     function _addCreator(address account) internal {
-        require(account != address(0), "CreatorRoleEnabled: zero account cannot be used");
-        require(!_creators[account], "CreatorRoleEnabled: already a creator account");
+        require(account != address(0), "CRE: zero account");
+        require(!_creators[account], "CRE: is creator");
         _creators[account] = true;
         _nrOfCreators += 1;
         emit CreatorAdded(account);
     }
 
     function _removeCreator(address account) internal {
-        require(account != address(0), "CreatorRoleEnabled: zero account cannot be used");
-        require(_creators[account], "CreatorRoleEnabled: not a creator account");
+        require(account != address(0), "CRE: zero account");
+        require(_creators[account], "CRE: not creator");
         _creators[account] = false;
         _nrOfCreators -= 1;
         emit CreatorRemoved(account);

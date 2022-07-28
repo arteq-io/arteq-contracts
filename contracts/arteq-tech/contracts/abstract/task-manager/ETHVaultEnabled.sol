@@ -40,11 +40,12 @@ abstract contract ETHVaultEnabled is AdminRoleEnabled, ETHVault {
       taskMustNotBeFinalized(adminTaskId)
       taskMustBeApproved(adminTaskId)
     {
-        require(_isDepositEnabled() != enableDeposit, "ETHVaultEnabled: cannot set the same value");
+        require(_isDepositEnabled() != enableDeposit, "EVE: the same value");
         _setEnableDeposit(enableDeposit);
         _finalizeTask(adminTaskId, "");
     }
 
+    /* solhint-disable func-name-mixedcase */
     function ETHTransfer(
         uint256 adminTaskId,
         address to,

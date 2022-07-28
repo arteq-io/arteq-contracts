@@ -26,6 +26,7 @@ import "./TaskExecutor.sol";
 /// @notice Use at your own risk
 abstract contract TaskManagedERC20VaultEnabled is TaskExecutor, ERC20Vault {
 
+    /* solhint-disable func-name-mixedcase */
     function ERC20Transfer(
         uint256 taskId,
         address tokenContract,

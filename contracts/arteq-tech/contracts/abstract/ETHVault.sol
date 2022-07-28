@@ -21,6 +21,7 @@ pragma solidity 0.8.1;
 /// @author Kam Amini <kam@arteq.io>
 ///
 /// @notice Use at your own risk
+
 abstract contract ETHVault {
 
     bool private _enableDeposit;
@@ -46,16 +47,19 @@ abstract contract ETHVault {
         }
     }
 
+    /* solhint-disable func-name-mixedcase */
     function _ETHTransfer(
         address to,
         uint256 amount
     ) internal {
-        require(to != address(0), "ETHVault: cannot transfer to zero");
-        require(amount > 0, "ETHVault: amount is zero");
-        require(amount <= address(this).balance, "ETHVault: transfer more than balance");
+        require(to != address(0), "EV: zero target");
+        require(amount > 0, "EV: zero amount");
+        require(amount <= address(this).balance, "EV: more than balance");
 
+        /* solhint-disable avoid-low-level-calls */
         (bool success, ) = to.call{value: amount}(new bytes(0));
-        require(success, "ETHVault: failed to transfer");
+        /* solhint-enable avoid-low-level-calls */
+        require(success, "EV: failed to transfer");
         emit ETHTransferred(to, amount);
     }
 }

@@ -43,13 +43,13 @@ abstract contract BatchTransferEnabled is AccountLocker {
         uint256[] memory amounts,
         uint256[] memory lockTss
     ) private {
-        require(_getTaskManager() != address(0), "BatchTransferEnabled: batch transfer source is not set");
-        require(tos.length == amounts.length, "BatchTransferEnabled: inputs have incorrect lengths");
-        require(tos.length == lockTss.length, "BatchTransferEnabled: inputs have incorrect lengths");
-        require(tos.length > 0, "BatchTransferEnabled: empty inputs");
+        require(_getTaskManager() != address(0), "BTE: no source");
+        require(tos.length == amounts.length, "BTE: wrong lengths");
+        require(tos.length == lockTss.length, "BTE: wrong lengths");
+        require(tos.length > 0, "BTE: empty inputs");
         for (uint256 i = 0; i < tos.length; i++) {
-            require(tos[i] != address(0), "BatchTransferEnabled: target with zero address");
-            require(tos[i] != _getTaskManager(), "BatchTransferEnabled: invalid target");
+            require(tos[i] != address(0), "BTE: zero address");
+            require(tos[i] != _getTaskManager(), "BTE: invalid target");
             if (amounts[i] > 0) {
                 _batchTransferSingle(_getTaskManager(), tos[i], amounts[i]);
             }

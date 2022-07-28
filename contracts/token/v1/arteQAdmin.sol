@@ -41,8 +41,12 @@ import "./IarteQAdmin.sol";
 ///     account can get removed or replaced.
 ///
 /// @notice Use at your own risk
+
+/* solhint-disable reason-string */
+/* solhint-disable contract-name-camelcase */
 contract arteQAdmin is IarteQAdmin {
 
+    /* solhint-disable var-name-mixedcase */
     uint public MAX_NR_OF_ADMINS = 10;
     uint public MIN_NR_OF_ADMINS = 5;
 
@@ -153,7 +157,8 @@ contract arteQAdmin is IarteQAdmin {
         emit TaskCreated(msg.sender, taskId, detailsURI);
     }
 
-    function taskURI(uint256 taskId) external view virtual override onlyOneOfAdmins taskMustExist(taskId) returns (string memory) {
+    function taskURI(uint256 taskId)
+      external view virtual override onlyOneOfAdmins taskMustExist(taskId) returns (string memory) {
         return _taskURIs[taskId];
     }
 
@@ -171,7 +176,8 @@ contract arteQAdmin is IarteQAdmin {
         emit TaskApprovalCancelled(msg.sender, taskId);
     }
 
-    function nrOfApprovals(uint256 taskId) external view virtual override onlyOneOfAdmins taskMustExist(taskId) returns (uint) {
+    function nrOfApprovals(uint256 taskId)
+      external view virtual override onlyOneOfAdmins taskMustExist(taskId) returns (uint) {
         return _taskApprovalsCount[taskId];
     }
 

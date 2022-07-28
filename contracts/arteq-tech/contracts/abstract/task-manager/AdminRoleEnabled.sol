@@ -25,8 +25,8 @@ import "./TaskManaged.sol";
 /// @notice Use at your own risk
 abstract contract AdminRoleEnabled is TaskManaged {
 
-    uint public MAX_NR_OF_ADMINS = 10;
-    uint public MIN_NR_OF_ADMINS = 4;
+    uint public constant MAX_NR_OF_ADMINS = 10;
+    uint public constant MIN_NR_OF_ADMINS = 4;
 
     mapping (address => bool) private _admins;
     uint internal _nrOfAdmins;
@@ -35,20 +35,12 @@ abstract contract AdminRoleEnabled is TaskManaged {
     event AdminRemoved(address account);
 
     modifier onlyAdmin() {
-        require(_isAdmin(msg.sender), "AdminRoleEnabled: not an admin account");
+        require(_isAdmin(msg.sender), "ARE: not admin");
         _;
     }
 
     constructor() {
         _nrOfAdmins = 0;
-    }
-
-    function minNrOfAdmins() external view returns (uint) {
-        return MIN_NR_OF_ADMINS;
-    }
-
-    function maxNrOfAdmins() external view returns (uint) {
-        return MAX_NR_OF_ADMINS;
     }
 
     function isAdmin(address account) external view
@@ -109,19 +101,18 @@ abstract contract AdminRoleEnabled is TaskManaged {
     }
 
     function _addAdmin(address account) internal {
-        require(account != address(0), "AdminRoleEnabled: zero account cannot be used");
-        require(!_admins[account], "AdminRoleEnabled: already an admin account");
-        require((_nrOfAdmins + 1) <= MAX_NR_OF_ADMINS, "AdminRoleEnabled: exceeds maximum number of admin accounts");
+        require(account != address(0), "ARE: zero account");
+        require(!_admins[account], "ARE: is admin");
+        require((_nrOfAdmins + 1) <= MAX_NR_OF_ADMINS, "ARE: exceeds max");
         _admins[account] = true;
         _nrOfAdmins += 1;
         emit AdminAdded(account);
     }
 
     function _removeAdmin(address account) internal {
-        require(account != address(0), "AdminRoleEnabled: zero account cannot be used");
-        require(_admins[account], "AdminRoleEnabled: not an admin account");
-        require((_nrOfAdmins - 1) >= MIN_NR_OF_ADMINS,
-                "AdminRoleEnabled: goes below minimum number of admin accounts");
+        require(account != address(0), "ARE: zero account");
+        require(_admins[account], "ARE: not admin");
+        require((_nrOfAdmins - 1) >= MIN_NR_OF_ADMINS, "ARE: below min");
         _admins[account] = false;
         _nrOfAdmins -= 1;
         emit AdminRemoved(account);

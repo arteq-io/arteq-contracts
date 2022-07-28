@@ -28,16 +28,17 @@ abstract contract ERC20Vault {
     event ERC20Transferred(address tokenContract, address to, uint256 amount);
     event ERC20Approved(address tokenContract, address spender, uint256 amount);
 
+    /* solhint-disable func-name-mixedcase */
     function _ERC20Transfer(
         address tokenContract,
         address to,
         uint256 amount
     ) internal {
-        require(tokenContract != address(0), "ERC20Vault: zero token address");
-        require(to != address(0), "ERC20Vault: cannot transfer to zero");
-        require(amount > 0, "ERC20Vault: amount is zero");
+        require(tokenContract != address(0), "E2V: zero address");
+        require(to != address(0), "E2V: zero target");
+        require(amount > 0, "E2V: zero amount");
         require(amount <= IERC20(tokenContract).balanceOf(address(this)),
-                                "ERC20Vault: transfer more than balance");
+                                "E2V: more than balance");
 
         IERC20(tokenContract).transfer(to, amount);
         emit ERC20Transferred(tokenContract, to, amount);
@@ -48,8 +49,8 @@ abstract contract ERC20Vault {
         address spender,
         uint256 amount
     ) internal {
-        require(tokenContract != address(0), "ERC20Vault: zero token address");
-        require(spender != address(0), "ERC20Vault: zero address for spender");
+        require(tokenContract != address(0), "E2V: zero address");
+        require(spender != address(0), "E2V: zero spender");
 
         IERC20(tokenContract).approve(spender, amount);
         emit ERC20Approved(tokenContract, spender, amount);

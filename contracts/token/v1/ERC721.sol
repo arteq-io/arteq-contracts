@@ -38,6 +38,8 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
   * the Metadata extension, but not including the Enumerable extension, which is available separately as
   * {ERC721Enumerable}.
   */
+
+/* solhint-disable reason-string */
 contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     using Address for address;
     using Strings for uint256;
@@ -221,7 +223,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
      * - `tokenId` token must exist and be owned by `from`.
-     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received},
+     *   which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
@@ -266,7 +269,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * Requirements:
      *
      * - `tokenId` must not exist.
-     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received},
+     *   which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
@@ -402,6 +406,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
                 if (reason.length == 0) {
                     revert("ERC721: transfer to non ERC721Receiver implementer");
                 } else {
+                    /* solhint-disable no-inline-assembly */
                     assembly {
                         revert(add(32, reason), mload(reason))
                     }
@@ -426,6 +431,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
      */
+    /* solhint-disable no-empty-blocks */
     function _beforeTokenTransfer(
         address from,
         address to,

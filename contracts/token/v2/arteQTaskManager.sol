@@ -21,8 +21,10 @@ pragma solidity 0.8.1;
 import "../../arteq-tech/contracts/TaskManager.sol";
 
 /// @notice Use at your own risk
+/* solhint-disable contract-name-camelcase */
 contract arteQTaskManager is TaskManager {
 
+    /* solhint-disable no-empty-blocks */
     constructor(
         address[] memory initialAdmins,
         address[] memory initialCreators,
